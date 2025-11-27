@@ -2,19 +2,13 @@
 
 A complete end-to-end room booking system built with Next.js, Supabase, and TypeScript. This system allows users to book meeting rooms and conference spaces while providing admins with comprehensive management tools.
 
-## ✨ Features
 
 ✅ **Authentication**
 - User registration and login with JWT
 - Role-based access control (User/Admin)
 - Secure session management with Supabase Auth
 
-✅ **Room Management**
-- Admin can create, edit, and deactivate rooms
-- Users can view only active rooms with amenities
-- Room capacity and features tracking
 
-✅ **Reservation System**
 - Users can book rooms with custom time slots
 - Real-time availability checking
 - Prevent double-booking with conflict detection
@@ -33,14 +27,6 @@ A complete end-to-end room booking system built with Next.js, Supabase, and Type
 - **Database**: PostgreSQL (Supabase)
 - **Authentication**: Supabase Auth (JWT)
 - **Deployment**: Vercel
-
-## 📋 Requirements Met
-
-| Requirement | Status | Details |
-|------------|--------|---------|
-| User Registration | ✅ | JWT-based with Supabase Auth |
-| User Login | ✅ | Email/password authentication |
-| JWT Authentication | ✅ | Token-based session management |
 | Roles (User/Admin) | ✅ | Role-based access control |
 | Access Control | ✅ | Users see own data, admins see all |
 | Create Room | ✅ | Admin only |
@@ -67,7 +53,6 @@ A complete end-to-end room booking system built with Next.js, Supabase, and Type
 ### Local Development
 
 1. **Clone the repository**
-\`\`\`bash
 git clone <your-repo-url>
 cd room-booking-system
 \`\`\`
