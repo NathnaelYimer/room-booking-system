@@ -122,6 +122,28 @@ DELETE /api/rooms/:id          - Deactivate room (admin only)
 GET    /api/rooms/:id          - Get room details
 \`\`\`
 
+### Admin API (server-side)
+
+These endpoints require the caller to be authenticated and have `profiles.role = 'admin'` in the database.
+
+- `POST /api/admin/promote` — Promote a user to admin. Body: `{ "email": "user@example.com" }` or `{ "user_id": "uuid" }`.
+- `GET /api/admin/reservations` — Get all reservations with room and user info (admin only).
+- `GET /api/admin/rooms` — Get all rooms (including inactive).
+- `POST /api/admin/rooms` — Create room (admin only).
+- `PUT /api/admin/rooms/:id` — Update room (admin only).
+- `DELETE /api/admin/rooms/:id` — Delete room (admin only).
+
+### Migration note
+
+Run `scripts/003_migrate_rooms.sql` in Supabase SQL Editor to add the required assignment fields to `public.rooms`:
+
+```sql
+-- Adds: room_number (unique), beds (integer), is_active (boolean)
+-- Run in Supabase SQL Editor (and ensure pgcrypto extension exists):
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+-- then run the migration script content in `scripts/003_migrate_rooms.sql`
+```
+
 ### Reservations
 \`\`\`
 POST   /api/reservations               - Create reservation (users)

@@ -171,6 +171,25 @@ WHERE email = 'test@example.com';
    - ✅ View all reservations
    - ✅ See system statistics
 
+## Admin API & Migration Updates
+
+The project includes server-side admin endpoints and a migration script to align the `rooms` table with the assignment fields. Run the migration in your Supabase project before testing admin features.
+
+Server-side admin endpoints (require admin role):
+
+- `POST /api/admin/promote` — Promote a user to admin. Body: `{ "user_id": "..." }` or `{ "email": "..." }`.
+- `GET /api/admin/reservations` — Admin-only list of all reservations with room and user info.
+- `GET /api/admin/rooms` — Admin-only list of all rooms (including inactive).
+- `POST /api/admin/rooms` — Admin-only create room.
+- `PUT /api/admin/rooms/:id` — Admin-only update room.
+- `DELETE /api/admin/rooms/:id` — Admin-only delete room.
+
+Migration file:
+
+- `scripts/003_migrate_rooms.sql` — Adds `room_number`, `beds`, and `is_active` columns to `public.rooms` and attempts to populate them from existing `name` and `capacity` columns. Run this in Supabase SQL Editor (and run `CREATE EXTENSION IF NOT EXISTS "pgcrypto";` first if required).
+
+See `TESTING_MANUAL.md` for a smoke-test checklist after applying the migration.
+
 ---
 
 ## 🔄 Part 4: Continuous Deployment (Auto-Updates)
