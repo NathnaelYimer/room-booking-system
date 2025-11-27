@@ -55,13 +55,17 @@ export async function POST(request: Request) {
     const { room_id, start_time, end_time, notes } = body
 
     // Check for overlapping reservations
+    // Overlap condition: existing.start_time < newEnd AND existing.end_time > newStart
+    const newStart = new Date(start_time).toISOString()
+    const newEnd = new Date(end_time).toISOString()
+
     const { data: overlapping, error: overlapError } = await supabase
       .from("reservations")
       .select("id")
       .eq("room_id", room_id)
       .eq("status", "confirmed")
-      .lt("end_time", new Date(end_time).toISOString())
-      .gt("start_time", new Date(start_time).toISOString())
+      .lt("start_time", newEnd)
+      .gt("end_time", newStart)
 
     if (overlapError) {
       return NextResponse.json({ error: overlapError.message }, { status: 500 })
