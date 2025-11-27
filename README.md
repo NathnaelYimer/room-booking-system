@@ -1,3 +1,47 @@
+## Room Booking System
+
+Minimal, self-contained room booking app built with Next.js and Supabase.
+
+Quick start
+----------
+- Install: `npm install`
+- Run locally: `npm run dev` (open `http://localhost:3000`)
+
+Environment variables
+---------------------
+- `NEXT_PUBLIC_SUPABASE_URL` — your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — public anon key
+- `SUPABASE_SERVICE_ROLE_KEY` — server key (keep secret; only set in Vercel)
+
+Database
+--------
+- Run `scripts/001_init_schema.sql` in the Supabase SQL Editor to create tables and RLS.
+- Optional migration to add room fields: `scripts/003_migrate_rooms.sql`.
+
+Make a user admin
+-----------------
+Run in Supabase SQL Editor:
+
+```sql
+UPDATE public.profiles
+SET role = 'admin'
+WHERE email = 'user@example.com';
+```
+
+Essential API endpoints
+-----------------------
+- `GET /api/rooms` — list active rooms
+- `POST /api/reservations` — create a reservation
+- Admin endpoints under `/api/admin/*` require `profiles.role = 'admin'` (server-side)
+
+Deployment
+----------
+- Push to GitHub and deploy on Vercel.
+- Add the environment variables above in the Vercel project settings and redeploy.
+
+If you want it shorter or want specific developer instructions (scripts, tests, Postman collection), tell me which sections to keep.
+
+License: MIT
 # 🏢 Room Booking System
 
 A complete end-to-end room booking system built with Next.js, Supabase, and TypeScript. This system allows users to book meeting rooms and conference spaces while providing admins with comprehensive management tools.
