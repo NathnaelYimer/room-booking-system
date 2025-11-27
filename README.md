@@ -81,6 +81,3 @@ Notes
 - Do not commit `SUPABASE_SERVICE_ROLE_KEY` to source control.
 - After pushing to GitHub, deploy on Vercel and add the environment variables in the project settings.
 
-License
--------
-MIT
