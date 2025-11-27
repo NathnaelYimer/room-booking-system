@@ -5,7 +5,8 @@ export async function GET() {
   try {
     const supabase = await createClient()
 
-    const { data, error } = await supabase.from("rooms").select("*").order("name", { ascending: true })
+    // Return only active rooms for public listing
+    const { data, error } = await supabase.from("rooms").select("*").eq("is_active", true).order("name", { ascending: true })
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
