@@ -15,6 +15,7 @@ export default function AllReservationsPage() {
   }, [])
 
   const fetchReservations = async () => {
+    // Fetch pending and confirmed reservations so admins can review and confirm
     const { data, error } = await supabase
       .from("reservations")
       .select(`
@@ -34,7 +35,7 @@ export default function AllReservationsPage() {
           full_name
         )
       `)
-      .eq("status", "confirmed")
+      .in("status", ["pending", "confirmed"])
       .order("start_time", { ascending: true })
 
     if (!error) {
@@ -50,6 +51,27 @@ export default function AllReservationsPage() {
       if (!error) {
         fetchReservations()
       }
+    }
+  }
+
+  const handleConfirm = async (reservationId: string) => {
+    if (!confirm("Confirm this reservation?")) return
+    try {
+      const res = await fetch(`/api/admin/reservations/${reservationId}/confirm`, { method: "POST" })
+      if (res.status === 200) {
+        fetchReservations()
+        return
+      }
+      if (res.status === 409) {
+        const body = await res.json()
+        alert("Cannot confirm: " + (body.error || "conflict"))
+        fetchReservations()
+        return
+      }
+      const errBody = await res.json()
+      alert("Error: " + (errBody.error || res.status))
+    } catch (e) {
+      alert("Network error confirming reservation")
     }
   }
 
@@ -97,9 +119,14 @@ export default function AllReservationsPage() {
                     <p className="font-semibold capitalize">{reservation.status}</p>
                   </div>
                 </div>
-                <Button variant="destructive" onClick={() => handleCancel(reservation.id)}>
-                  Cancel Reservation
-                </Button>
+                <div className="flex gap-2">
+                  {reservation.status === "pending" && (
+                    <Button onClick={() => handleConfirm(reservation.id)}>Confirm</Button>
+                  )}
+                  <Button variant="destructive" onClick={() => handleCancel(reservation.id)}>
+                    Cancel Reservation
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}

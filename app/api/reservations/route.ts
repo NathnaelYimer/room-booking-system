@@ -82,7 +82,7 @@ export async function POST(request: Request) {
         user_id: user.id,
         start_time: new Date(start_time).toISOString(),
         end_time: new Date(end_time).toISOString(),
-        status: "confirmed",
+        status: "pending",
         notes,
       })
       .select()
